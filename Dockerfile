@@ -1,5 +1,15 @@
 FROM tomcat:10-jdk17
 
-COPY target/WhatsAppDemo.war /usr/local/tomcat/webapps/
+WORKDIR /app
+
+COPY . .
+
+RUN apt-get update && apt-get install -y maven
+
+RUN mvn clean package
+
+RUN cp target/*.war /usr/local/tomcat/webapps/
 
 EXPOSE 8080
+
+CMD ["catalina.sh","run"]
